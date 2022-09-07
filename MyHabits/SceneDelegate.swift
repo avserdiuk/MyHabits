@@ -16,7 +16,36 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+
+        let tabBarController = UITabBarController()
+
+        var habbitsTabBarNavigatorController = UINavigationController()
+        var infoTabBarNavigatorController = UINavigationController()
+
+        // создаем 2 контейнера и присваиваем им нужные представления ViewController
+        habbitsTabBarNavigatorController = UINavigationController.init(rootViewController: HabbitsViewController())
+        infoTabBarNavigatorController = UINavigationController.init(rootViewController: InfoViewController())
+
+        tabBarController.viewControllers = [habbitsTabBarNavigatorController, infoTabBarNavigatorController]
+
+        // cтилизация контейнеров
+        let item1 = UITabBarItem(title: "Привычки", image: UIImage(named: "shape.png"), tag: 0)
+        let item2 = UITabBarItem(title: "Информация", image: UIImage(systemName: "info.circle.fill"), tag: 1)
+
+        habbitsTabBarNavigatorController.tabBarItem = item1
+        infoTabBarNavigatorController.tabBarItem = item2
+
+        // стилизация TabBar'a
+        UITabBar.appearance().tintColor = UIColor(red: 161/255.0, green: 22/255.0, blue: 204/255.0, alpha: 1)
+        UITabBar.appearance().backgroundColor = UIColor(red: 247/255.0, green: 247/255.0, blue: 247/255.0, alpha: 0.8)
+
+        let window = UIWindow(windowScene: windowScene)
+        window.rootViewController = tabBarController
+        window.makeKeyAndVisible()
+        self.window = window
+
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
