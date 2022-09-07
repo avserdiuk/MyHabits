@@ -13,6 +13,8 @@
 		417C50FA28C89486004C7063 /* HabitsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417C50F928C89486004C7063 /* HabitsStore.swift */; };
 		417C50FC28C8960B004C7063 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417C50FB28C8960B004C7063 /* InfoViewController.swift */; };
 		417C50FE28C8966D004C7063 /* HabbitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417C50FD28C8966D004C7063 /* HabbitsViewController.swift */; };
+		417C510128C89F48004C7063 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417C510028C89F48004C7063 /* Colors.swift */; };
+		417C510328C8A8B2004C7063 /* Texts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417C510228C8A8B2004C7063 /* Texts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		417C50F928C89486004C7063 /* HabitsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsStore.swift; sourceTree = "<group>"; };
 		417C50FB28C8960B004C7063 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		417C50FD28C8966D004C7063 /* HabbitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabbitsViewController.swift; sourceTree = "<group>"; };
+		417C510028C89F48004C7063 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		417C510228C8A8B2004C7063 /* Texts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Texts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,20 +63,30 @@
 				4100612B28C88B8200050EDF /* AppDelegate.swift */,
 				417C50F928C89486004C7063 /* HabitsStore.swift */,
 				4100612D28C88B8200050EDF /* SceneDelegate.swift */,
-				417C50FF28C89887004C7063 /* Views */,
+				417C510428C8AF75004C7063 /* Models */,
+				417C50FF28C89887004C7063 /* ViewControllers */,
 				4100613428C88B8300050EDF /* Assets.xcassets */,
 				4100613928C88B8300050EDF /* Info.plist */,
 			);
 			path = MyHabits;
 			sourceTree = "<group>";
 		};
-		417C50FF28C89887004C7063 /* Views */ = {
+		417C50FF28C89887004C7063 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				417C50FD28C8966D004C7063 /* HabbitsViewController.swift */,
 				417C50FB28C8960B004C7063 /* InfoViewController.swift */,
 			);
-			path = Views;
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		417C510428C8AF75004C7063 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				417C510028C89F48004C7063 /* Colors.swift */,
+				417C510228C8A8B2004C7063 /* Texts.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,7 +159,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				417C50FA28C89486004C7063 /* HabitsStore.swift in Sources */,
+				417C510328C8A8B2004C7063 /* Texts.swift in Sources */,
 				417C50FE28C8966D004C7063 /* HabbitsViewController.swift in Sources */,
+				417C510128C89F48004C7063 /* Colors.swift in Sources */,
 				4100612C28C88B8200050EDF /* AppDelegate.swift in Sources */,
 				4100612E28C88B8200050EDF /* SceneDelegate.swift in Sources */,
 				417C50FC28C8960B004C7063 /* InfoViewController.swift in Sources */,
