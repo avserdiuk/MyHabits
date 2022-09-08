@@ -65,6 +65,7 @@ class InfoViewController : UIViewController {
     }
 
     func addViews(){
+
         view.addSubview(scrollView)
         scrollView.addSubview(content)
         content.addSubview(titleLable)
