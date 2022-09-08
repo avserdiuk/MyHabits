@@ -51,11 +51,19 @@ class HabitViewController : UIViewController {
         return label
     }()
 
-    private lazy var labelTimeHabbit2 : UILabel = {
+    private lazy var labelTimeHabbitText : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Каждый день в: "
+        label.text = "Каждый день в "
         label.font = UIFont(name: "Helvetica", size: 17)
+        return label
+    }()
+    private lazy var labelTimeHabbitTime : UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "11:00 PM"
+        label.font = UIFont(name: "Helvetica", size: 17)
+        label.textColor = mainPurple
         return label
     }()
 
@@ -64,6 +72,7 @@ class HabitViewController : UIViewController {
         picker.datePickerMode = .time
         picker.preferredDatePickerStyle = .wheels
         picker.translatesAutoresizingMaskIntoConstraints = false
+        picker.addTarget(self, action: #selector(didSelect), for: .valueChanged)
         return picker
     }()
 
@@ -79,14 +88,9 @@ class HabitViewController : UIViewController {
         view.addSubview(labelColorHabbit)
         view.addSubview(colorPickerButton)
         view.addSubview(labelTimeHabbit)
-        view.addSubview(labelTimeHabbit2)
+        view.addSubview(labelTimeHabbitText)
+        view.addSubview(labelTimeHabbitTime)
         view.addSubview(timePicker)
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm a"
-        dateFormatter.string(from: timePicker.date)
-
-        labelTimeHabbit2.text = "Каждый день в \(dateFormatter.string(from: timePicker.date))"
 
         NSLayoutConstraint.activate([
 
@@ -108,13 +112,15 @@ class HabitViewController : UIViewController {
             labelTimeHabbit.topAnchor.constraint(equalTo: colorPickerButton.bottomAnchor, constant: 15),
             labelTimeHabbit.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
 
-            labelTimeHabbit2.topAnchor.constraint(equalTo: labelTimeHabbit.bottomAnchor, constant: 7),
-            labelTimeHabbit2.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
+            labelTimeHabbitText.topAnchor.constraint(equalTo: labelTimeHabbit.bottomAnchor, constant: 7),
+            labelTimeHabbitText.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
 
-            timePicker.topAnchor.constraint(equalTo: labelTimeHabbit2.bottomAnchor, constant: 7),
+            labelTimeHabbitTime.topAnchor.constraint(equalTo: labelTimeHabbit.bottomAnchor, constant: 7),
+            labelTimeHabbitTime.leftAnchor.constraint(equalTo: labelTimeHabbitText.rightAnchor, constant: 0),
+
+            timePicker.topAnchor.constraint(equalTo: labelTimeHabbitText.bottomAnchor, constant: 7),
             timePicker.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
             timePicker.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
-
 
         ])
 
@@ -166,6 +172,14 @@ class HabitViewController : UIViewController {
         store.habits.append(newHabbit)
 
         dismiss(animated: true)
+    }
+
+    @objc func didSelect(){
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm a"
+        dateFormatter.string(from: timePicker.date)
+
+        labelTimeHabbitTime.text = "\(dateFormatter.string(from: timePicker.date))"
     }
 }
 
