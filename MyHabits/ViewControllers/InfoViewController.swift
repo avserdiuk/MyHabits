@@ -49,7 +49,6 @@ class InfoViewController : UIViewController {
 
         addViews()
         addConstraints()
-
     }
 
     func setupView(){
@@ -65,7 +64,6 @@ class InfoViewController : UIViewController {
     }
 
     func addViews(){
-
         view.addSubview(scrollView)
         scrollView.addSubview(content)
         content.addSubview(titleLable)
@@ -92,7 +90,6 @@ class InfoViewController : UIViewController {
             informationLable.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
             informationLable.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
             informationLable.bottomAnchor.constraint(equalTo: content.bottomAnchor, constant: -22),
-
         ])
     }
 }

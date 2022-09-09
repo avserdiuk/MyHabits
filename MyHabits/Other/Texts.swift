@@ -7,6 +7,8 @@
 
 import Foundation
 
+// Информация
+
 let informationViewTitle : String = "Информация"
 let informationTitle : String = "Привычка за 21 день"
 let informatiosText : String = """
@@ -26,3 +28,4 @@ let informatiosText : String = """
 6. На 90-й день соблюдения техники все лишнее из «прошлой жизни» перестает напоминать о себе, и человек, оглянувшись назад, осознает себя полностью обновившимся.
 """
 
+// другая страница какая то

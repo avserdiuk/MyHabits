@@ -58,6 +58,8 @@ class HabitViewController : UIViewController {
         label.font = UIFont(name: "Helvetica", size: 17)
         return label
     }()
+    
+
     private lazy var labelTimeHabbitTime : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -92,6 +94,11 @@ class HabitViewController : UIViewController {
         view.addSubview(labelTimeHabbitTime)
         view.addSubview(timePicker)
 
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm a"
+        dateFormatter.string(from: timePicker.date)
+        labelTimeHabbitTime.text = "\(dateFormatter.string(from: timePicker.date))"
+
         NSLayoutConstraint.activate([
 
             labelNameHabbit.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 21),
@@ -123,7 +130,6 @@ class HabitViewController : UIViewController {
             timePicker.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
 
         ])
-
     }
 
     @objc func showColorPicker(){
@@ -132,7 +138,6 @@ class HabitViewController : UIViewController {
         color.delegate = self
         color.selectedColor = colorPickerButton.backgroundColor!
         present(color, animated: true)
-
     }
 
     func setupNavigationBar(){
@@ -140,6 +145,7 @@ class HabitViewController : UIViewController {
         // указываем значение тайтла и его стиль
         self.navigationItem.title = "Создать"
 
+        // настройка навигационного бара
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = backgroundGray
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
@@ -174,6 +180,7 @@ class HabitViewController : UIViewController {
         dismiss(animated: true)
     }
 
+    // функция изменения времени привычки после выбора времени в датапикере
     @objc func didSelect(){
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "hh:mm a"
@@ -185,6 +192,7 @@ class HabitViewController : UIViewController {
 
 extension HabitViewController: UIColorPickerViewControllerDelegate {
 
+    // тут мы говорим о том что нужно поменть цвет иконки после выбора цвета
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
         colorPickerButton.backgroundColor = viewController.selectedColor
     }

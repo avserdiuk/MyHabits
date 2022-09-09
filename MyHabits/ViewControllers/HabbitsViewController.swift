@@ -10,7 +10,6 @@ import UIKit
 
 class HabbitsViewController : UIViewController {
 
-
     private lazy var layout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -21,7 +20,8 @@ class HabbitsViewController : UIViewController {
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.layout)
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "DefaultCell")
-//        collectionView.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: "CustomCell")
+        collectionView.register(ProgressCollectionViewCell.self, forCellWithReuseIdentifier: "CustomProgressCell")
+        collectionView.register(HabitCollectionViewCell.self, forCellWithReuseIdentifier: "CustomHabbitCell")
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = backgroundLightGray
@@ -46,12 +46,13 @@ class HabbitsViewController : UIViewController {
             self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -44)
         ])
 
-//       HabitsStore.shared.habits.removeAll()
+       //   HabitsStore.shared.habits.removeAll()
 
     }
 
     override func viewWillAppear(_ animated: Bool) {
         collectionView.reloadData()
+        print("перерисовка")
     }
 
     // Настраиваем навигационный бар
@@ -88,30 +89,31 @@ extension HabbitsViewController : UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DefaultCell", for: indexPath)
 
-
-
-        cell.backgroundColor = .white
-        cell.layer.cornerRadius = 8
-
-        //print(indexPath.row)
+        // собираем нулевой элемент как прогресс бар
 
         if indexPath.row == 0 {
-            cell.backgroundColor = .white
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomProgressCell", for: indexPath) as? ProgressCollectionViewCell else {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DefaultCell", for: indexPath)
+                return cell
+            }
+            
+            cell.setup()
             cell.layer.cornerRadius = 8
-            cell.layer.borderWidth = 1
-            cell.layer.borderColor = CGColor(red: 242/255.0, green: 242/255.0, blue: 247/255.0, alpha: 1)
+            return cell
         }
 
+        // для всех остальных элементов делаем по кастомную ячейку привычки
+
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomHabbitCell", for: indexPath) as? HabitCollectionViewCell else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DefaultCell", for: indexPath)
+            return cell
+        }
+        cell.layer.cornerRadius = 8
+        cell.setup(index: indexPath.row - 1)
         return cell
-
     }
-
-
 }
-
-
 
 extension HabbitsViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
