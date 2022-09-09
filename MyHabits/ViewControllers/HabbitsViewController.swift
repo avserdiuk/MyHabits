@@ -46,11 +46,12 @@ class HabbitsViewController : UIViewController {
             self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -44)
         ])
 
-       //   HabitsStore.shared.habits.removeAll()
+//          HabitsStore.shared.habits.removeAll()
 
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         collectionView.reloadData()
         print("перерисовка")
     }
@@ -112,6 +113,16 @@ extension HabbitsViewController : UICollectionViewDataSource {
         cell.layer.cornerRadius = 8
         cell.setup(index: indexPath.row - 1)
         return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.row != 0 {
+            let habitDetailsViewController = HabitDetailsViewController()
+            habitDetailsViewController.index = indexPath.row - 1
+            navigationController?.pushViewController(habitDetailsViewController, animated: false)
+        }
+
+
     }
 }
 

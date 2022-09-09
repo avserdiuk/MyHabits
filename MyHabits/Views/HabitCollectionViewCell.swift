@@ -24,7 +24,7 @@ class HabitCollectionViewCell : UICollectionViewCell {
         label.text = "Каждый день в 7:30"
         label.font = UIFont(name: "Helvetica Neue", size: 12)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
+        label.textColor = .systemGray2
         return label
     }()
 
@@ -33,7 +33,7 @@ class HabitCollectionViewCell : UICollectionViewCell {
         label.text = "Счетчик 0"
         label.font = UIFont(name: "Helvetica Neue", size: 13)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
+        label.textColor = .systemGray
         return label
     }()
 

@@ -19,6 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
+
+
         let tabBarController = UITabBarController()
 
         var habbitsTabBarNavigatorController = UINavigationController()
@@ -45,6 +47,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
         self.window = window
+        
+        window.tintColor = mainPurple
 
     }
 

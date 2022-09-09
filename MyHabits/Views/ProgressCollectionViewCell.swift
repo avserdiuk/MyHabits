@@ -16,7 +16,7 @@ class ProgressCollectionViewCell : UICollectionViewCell {
         label.text = "Все получится!"
         label.font = UIFont(name: "Helvetica Neue", size: 13)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
+        label.textColor = .systemGray
         return label
     }()
 
@@ -25,7 +25,7 @@ class ProgressCollectionViewCell : UICollectionViewCell {
         label.text = "\(Int(HabitsStore.shared.todayProgress*100))%"
         label.font = UIFont(name: "Helvetica Neue", size: 13)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
+        label.textColor = .systemGray
         return label
     }()
 
