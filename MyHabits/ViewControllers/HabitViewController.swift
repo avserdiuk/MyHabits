@@ -8,8 +8,9 @@
 import Foundation
 import UIKit
 
-var place = ""
-var habbitIndex = 999
+var callPlace = "" // место вызова
+var habbitIndex = Int() // индекс для понимания с какой привычкой работаем
+var mark : Int = 0 // маркер для сокрытия экрана детального просмотра привычки
 
 class HabitViewController : UIViewController {
 
@@ -98,13 +99,19 @@ class HabitViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if place == "Detail" {
-            view.backgroundColor = .white
-//            habbitName = HabitsStore.shared.habits[habbitIndex].name
+        view.backgroundColor = .white
 
-            setupEditNavigationBar()
-            addViews()
-            addConstraints()
+        // настройка навигационного бара
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = backgroundGray
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
+        setupNavigationBar()
+        addViews()
+        addConstraints()
+
+        // если нас вызывают из детального представляем, настраиваем элементы немного по другому
+        if callPlace == "fromDetail" {
 
             textfieldNameHabbit.text = HabitsStore.shared.habits[habbitIndex].name
             colorPickerButton.backgroundColor = HabitsStore.shared.habits[habbitIndex].color
@@ -119,46 +126,31 @@ class HabitViewController : UIViewController {
                 deleteBtn.heightAnchor.constraint(equalToConstant: 50),
             ])
 
-
             // добавляем события для алерта
             alertController.addAction(UIAlertAction(title: "Отмена", style: .default, handler: { _ in
-                print("отмена удаления")
+                // print("отмена удаления")
             }))
             alertController.addAction(UIAlertAction(title: "Удалить", style: .default, handler: { _ in
                 HabitsStore.shared.habits.remove(at: habbitIndex)
                 self.dismiss(animated: true)
+                mark = 1
             }))
-            
-
         } else {
-            view.backgroundColor = .white
-
-            setupNavigationBar()
-            addViews()
-            addConstraints()
-
 
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "hh:mm a"
             dateFormatter.string(from: timePicker.date)
             labelTimeHabbitTime.text = "\(dateFormatter.string(from: timePicker.date))"
 
-
-
-
         }
     }
 
+    // обрабатываем удаляение привычки
     @objc func deleteHabbit(){
-
-
         self.present(alertController, animated: true, completion: nil)
-
-
-       // HabitsStore.shared.habits.remove(at: habbitIndex)
-       // dismiss(animated: true)
     }
 
+    // обрабатывае вызов выбора цвета
     @objc func showColorPicker(){
         let color = UIColorPickerViewController()
         color.supportsAlpha = false
@@ -167,6 +159,7 @@ class HabitViewController : UIViewController {
         present(color, animated: true)
     }
 
+    // добавляем все на экран
     func addViews(){
         view.addSubview(labelNameHabbit)
         view.addSubview(textfieldNameHabbit)
@@ -176,9 +169,9 @@ class HabitViewController : UIViewController {
         view.addSubview(labelTimeHabbitText)
         view.addSubview(labelTimeHabbitTime)
         view.addSubview(timePicker)
-
     }
 
+    // прописываем все констрейнты
     func addConstraints(){
         NSLayoutConstraint.activate([
 
@@ -213,50 +206,34 @@ class HabitViewController : UIViewController {
         ])
     }
 
+    // настраем нав бар в зависимости от места вызова
     func setupNavigationBar(){
 
-        // указываем значение тайтла и его стиль
-        self.navigationItem.title = "Создать"
-
-        // настройка навигационного бара
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = backgroundGray
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-
-        // добавляем инопки слева и справа от тайтла
         let modalDismissAction = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(hideModal))
-        let modalSaveAction = UIBarButtonItem(title: "Сохранить", style: .plain, target: self, action: #selector(saveHabbit))
-
         navigationItem.leftBarButtonItems = [modalDismissAction]
-        navigationItem.rightBarButtonItems = [modalSaveAction]
         navigationItem.leftBarButtonItem?.tintColor = mainPurple
         navigationItem.rightBarButtonItem?.tintColor = mainPurple
 
+        if callPlace == "fromNewHabbit"{
+
+            self.navigationItem.title = "Создать"
+
+            let modalSaveAction = UIBarButtonItem(title: "Сохранить", style: .plain, target: self, action: #selector(saveHabbit))
+            navigationItem.rightBarButtonItems = [modalSaveAction]
+        } else {
+
+            self.navigationItem.title = "Правка"
+
+            // добавляем инопки слева и справа от тайтла
+
+            let modalSaveAction = UIBarButtonItem(title: "Сохранить", style: .plain, target: self, action: #selector(saveEditHabbit))
+            navigationItem.rightBarButtonItems = [modalSaveAction]
+        }
     }
 
-    func setupEditNavigationBar(){
-
-        // указываем значение тайтла и его стиль
-        self.navigationItem.title = "Правка"
-
-        // настройка навигационного бара
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = backgroundGray
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-
-        // добавляем инопки слева и справа от тайтла
-        let modalDismissAction = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(hideEditModal))
-        let modalSaveAction = UIBarButtonItem(title: "Сохранить", style: .plain, target: self, action: #selector(saveEditHabbit))
-
-        navigationItem.leftBarButtonItems = [modalDismissAction]
-        navigationItem.rightBarButtonItems = [modalSaveAction]
-        navigationItem.leftBarButtonItem?.tintColor = mainPurple
-        navigationItem.rightBarButtonItem?.tintColor = mainPurple
-
-    }
 
     // функция сокрытия модального представляения
-    @objc func hideEditModal(){
+    @objc func hideModal(){
         dismiss(animated: true)
     }
 
@@ -270,12 +247,7 @@ class HabitViewController : UIViewController {
         HabitsStore.shared.save()
 
         dismiss(animated: true)
-    }
-
-
-    // функция сокрытия модального представляения
-    @objc func hideModal(){
-        dismiss(animated: true)
+        mark = 1
     }
 
     // функция создания привычки

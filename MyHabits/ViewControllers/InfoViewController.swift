@@ -10,8 +10,6 @@ import UIKit
 
 class InfoViewController : UIViewController {
 
-
-    // создаем скролвью
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -51,6 +49,7 @@ class InfoViewController : UIViewController {
         addConstraints()
     }
 
+    // настраиваем представление и нав бар
     func setupView(){
         view.backgroundColor = .white
 
@@ -58,18 +57,18 @@ class InfoViewController : UIViewController {
 
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = backgroundGray
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
 
+    // добавляем все необходимое на экран
     func addViews(){
         view.addSubview(scrollView)
         scrollView.addSubview(content)
         content.addSubview(titleLable)
         content.addSubview(informationLable)
     }
-    
+
+    // прописываем констрейнты
     func addConstraints(){
         NSLayoutConstraint.activate([
 

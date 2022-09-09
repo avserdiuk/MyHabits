@@ -19,9 +19,9 @@ class HabbitsViewController : UIViewController {
 
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.layout)
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "DefaultCell")
         collectionView.register(ProgressCollectionViewCell.self, forCellWithReuseIdentifier: "CustomProgressCell")
         collectionView.register(HabitCollectionViewCell.self, forCellWithReuseIdentifier: "CustomHabbitCell")
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "DefaultCell")
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = backgroundLightGray
@@ -29,35 +29,23 @@ class HabbitsViewController : UIViewController {
         return collectionView
     }()
 
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
 
-        setupNavigationBar()
-
-        view.addSubview(collectionView)
-
-        NSLayoutConstraint.activate([
-            self.collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-            self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-            self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -44)
-        ])
-
-//          HabitsStore.shared.habits.removeAll()
-
+        setupView()
+        addViews()
+        addConstraints()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        collectionView.reloadData()
-        print("перерисовка")
+        collectionView.reloadData() // обновляем коллекцию переходе на вью
     }
 
     // Настраиваем навигационный бар
-    func setupNavigationBar(){
+    private func setupView(){
+
+        view.backgroundColor = .white
 
         self.navigationItem.title = "Сегодня"
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -74,39 +62,49 @@ class HabbitsViewController : UIViewController {
         navigationItem.rightBarButtonItem?.tintColor = mainPurple
     }
 
+    private func addViews(){
+        view.addSubview(collectionView)
+    }
+
+    private func addConstraints(){
+        NSLayoutConstraint.activate([
+            self.collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+            self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+            self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -44)
+        ])
+    }
+
     // вызываем модальное окно навигационным баром
     @objc func showModal(){
-        place = "NewHabbit"
+        callPlace = "fromNewHabbit" // ставим метку что вызов произошел именно из этого вью
+
         let navController = UINavigationController(rootViewController: HabitViewController())
         navController.modalPresentationStyle = .fullScreen
         self.present(navController, animated:true, completion: nil)
     }
 }
 
-
 extension HabbitsViewController : UICollectionViewDataSource {
+
+    // в нашей коллекции будет столько элементов сколько будет в массиве привычек. +1 элемент для прогресс бара
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return HabitsStore.shared.habits.count + 1
     }
 
+    // собираем нулевой элемент как прогресс бар, остальные элементы как карточки привычек
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-
-        // собираем нулевой элемент как прогресс бар
-
         if indexPath.row == 0 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomProgressCell", for: indexPath) as? ProgressCollectionViewCell else {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DefaultCell", for: indexPath)
                 return cell
             }
-            
-            cell.setup()
             cell.layer.cornerRadius = 8
+            cell.setup()
             return cell
         }
 
         // для всех остальных элементов делаем по кастомную ячейку привычки
-
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomHabbitCell", for: indexPath) as? HabitCollectionViewCell else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DefaultCell", for: indexPath)
             return cell
@@ -116,6 +114,7 @@ extension HabbitsViewController : UICollectionViewDataSource {
         return cell
     }
 
+    // при нажатии на элемент мы переходим в детальное представление (кроме 0 элемента, т.к. там прогресс бар)
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row != 0 {
             habbitIndex = indexPath.row - 1
@@ -123,18 +122,15 @@ extension HabbitsViewController : UICollectionViewDataSource {
             habitDetailsViewController.index = indexPath.row - 1
             navigationController?.pushViewController(habitDetailsViewController, animated: false)
         }
-
-
     }
 }
 
 extension HabbitsViewController : UICollectionViewDelegateFlowLayout {
+    // настраиваем размеры для элементов по макету
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
         if indexPath.row == 0 {
-            return CGSize(width: view.frame.width-32 , height: 60)
+            return CGSize(width: view.frame.width-32 , height: 60) // прогресс бар
         }
-
-        return CGSize(width: view.frame.width-32 , height: 130)
+        return CGSize(width: view.frame.width-32 , height: 130) // карточки привычки
     }
 }

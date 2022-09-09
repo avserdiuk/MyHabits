@@ -10,7 +10,7 @@ import UIKit
 
 class HabitDetailsViewController : UIViewController {
 
-    var index : Int = 0
+    var index : Int = 0 // переменная для понимания с какой привычкой мы работаем
 
     private lazy var table : UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -24,21 +24,44 @@ class HabitDetailsViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupView()
+        view.addSubview(table)
+        addConstraints()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if mark == 1 {
+            self.navigationController?.popViewController(animated: true)
+            mark = 0
+        }
+    }
+
+    func setupView(){
         view.backgroundColor = .white
 
         // указываем значение тайтла и его стиль
         self.navigationItem.title = HabitsStore.shared.habits[index].name
         self.navigationController?.navigationBar.prefersLargeTitles = false
 
-        // добавляем инопки слева и справа от тайтла
+        // добавляем инопку справа от тайтла
         let modalSaveAction = UIBarButtonItem(title: "Править", style: .plain, target: self, action: #selector(showModal))
 
         navigationItem.rightBarButtonItems = [modalSaveAction]
         navigationItem.rightBarButtonItem?.tintColor = mainPurple
+    }
 
+    // функция открытия модального представляения
+    @objc func showModal(){
+        let navController = UINavigationController(rootViewController: HabitViewController())
+        navController.modalPresentationStyle = .fullScreen
+        callPlace = "fromDetail"
+        self.present(navController, animated:true, completion: nil)
+    }
 
-        view.addSubview(table)
-
+    // прописываем констрейнты
+    func addConstraints(){
         NSLayoutConstraint.activate([
 
             table.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
@@ -47,21 +70,7 @@ class HabitDetailsViewController : UIViewController {
             table.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
 
         ])
-
     }
-
-    // функция сокрытия модального представляения
-    @objc func showModal(){
-        let navController = UINavigationController(rootViewController: HabitViewController())
-        navController.modalPresentationStyle = .fullScreen
-        place = "Detail"
-        self.present(navController, animated:true, completion: nil)
-
-        
-    }
-
-
-
 }
 
 extension HabitDetailsViewController : UITableViewDelegate {
@@ -78,7 +87,6 @@ extension HabitDetailsViewController : UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         HabitsStore.shared.dates.count
-
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -97,7 +105,4 @@ extension HabitDetailsViewController : UITableViewDataSource {
         return cell
 
     }
-
-
-
 }
