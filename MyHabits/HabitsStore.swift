@@ -40,7 +40,7 @@ public final class Habit: Codable {
 
     /// Описание времени выполнения привычки.
     public var dateString: String {
-        "Каждый день в " + dateFormatter.string(from: date)
+        dateFormatter.string(from: date)
     }
 
     /// Показывает, была ли сегодня добавлена привычка.

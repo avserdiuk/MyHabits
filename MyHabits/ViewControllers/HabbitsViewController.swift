@@ -76,6 +76,7 @@ class HabbitsViewController : UIViewController {
 
     // вызываем модальное окно навигационным баром
     @objc func showModal(){
+        place = "NewHabbit"
         let navController = UINavigationController(rootViewController: HabitViewController())
         navController.modalPresentationStyle = .fullScreen
         self.present(navController, animated:true, completion: nil)
@@ -117,6 +118,7 @@ extension HabbitsViewController : UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row != 0 {
+            habbitIndex = indexPath.row - 1
             let habitDetailsViewController = HabitDetailsViewController()
             habitDetailsViewController.index = indexPath.row - 1
             navigationController?.pushViewController(habitDetailsViewController, animated: false)

@@ -8,7 +8,13 @@
 import Foundation
 import UIKit
 
+var place = ""
+var habbitIndex = 999
+
 class HabitViewController : UIViewController {
+
+    let index = 0
+    let alertController = UIAlertController(title: "Удалить привычку", message: "Вы хотите удалить привычку?", preferredStyle: .alert)
 
     private lazy var labelNameHabbit : UILabel = {
         let label = UILabel()
@@ -78,13 +84,90 @@ class HabitViewController : UIViewController {
         return picker
     }()
 
+    private lazy var deleteBtn : UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .white
+        button.addTarget(self, action: #selector(deleteHabbit) , for: .touchUpInside)
+        button.setTitle("Удалить привычку", for: .normal)
+        button.setTitleColor(mainRed, for: .normal)
+        button.titleLabel?.font = UIFont(name: "Helvetica", size: 17)
+        return button
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        if place == "Detail" {
+            view.backgroundColor = .white
+//            habbitName = HabitsStore.shared.habits[habbitIndex].name
 
-        setupNavigationBar()
+            setupEditNavigationBar()
+            addViews()
+            addConstraints()
 
+            textfieldNameHabbit.text = HabitsStore.shared.habits[habbitIndex].name
+            colorPickerButton.backgroundColor = HabitsStore.shared.habits[habbitIndex].color
+            labelTimeHabbitTime.text = HabitsStore.shared.habits[habbitIndex].dateString
+            timePicker.date = HabitsStore.shared.habits[habbitIndex].date
+
+            view.addSubview(deleteBtn)
+
+            NSLayoutConstraint.activate([
+                deleteBtn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+                deleteBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                deleteBtn.heightAnchor.constraint(equalToConstant: 50),
+            ])
+
+
+            // добавляем события для алерта
+            alertController.addAction(UIAlertAction(title: "Отмена", style: .default, handler: { _ in
+                print("отмена удаления")
+            }))
+            alertController.addAction(UIAlertAction(title: "Удалить", style: .default, handler: { _ in
+                HabitsStore.shared.habits.remove(at: habbitIndex)
+                self.dismiss(animated: true)
+            }))
+            
+
+        } else {
+            view.backgroundColor = .white
+
+            setupNavigationBar()
+            addViews()
+            addConstraints()
+
+
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "hh:mm a"
+            dateFormatter.string(from: timePicker.date)
+            labelTimeHabbitTime.text = "\(dateFormatter.string(from: timePicker.date))"
+
+
+
+
+        }
+    }
+
+    @objc func deleteHabbit(){
+
+
+        self.present(alertController, animated: true, completion: nil)
+
+
+       // HabitsStore.shared.habits.remove(at: habbitIndex)
+       // dismiss(animated: true)
+    }
+
+    @objc func showColorPicker(){
+        let color = UIColorPickerViewController()
+        color.supportsAlpha = false
+        color.delegate = self
+        color.selectedColor = colorPickerButton.backgroundColor!
+        present(color, animated: true)
+    }
+
+    func addViews(){
         view.addSubview(labelNameHabbit)
         view.addSubview(textfieldNameHabbit)
         view.addSubview(labelColorHabbit)
@@ -94,11 +177,9 @@ class HabitViewController : UIViewController {
         view.addSubview(labelTimeHabbitTime)
         view.addSubview(timePicker)
 
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm a"
-        dateFormatter.string(from: timePicker.date)
-        labelTimeHabbitTime.text = "\(dateFormatter.string(from: timePicker.date))"
+    }
 
+    func addConstraints(){
         NSLayoutConstraint.activate([
 
             labelNameHabbit.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 21),
@@ -132,14 +213,6 @@ class HabitViewController : UIViewController {
         ])
     }
 
-    @objc func showColorPicker(){
-        let color = UIColorPickerViewController()
-        color.supportsAlpha = false
-        color.delegate = self
-        color.selectedColor = colorPickerButton.backgroundColor!
-        present(color, animated: true)
-    }
-
     func setupNavigationBar(){
 
         // указываем значение тайтла и его стиль
@@ -160,6 +233,45 @@ class HabitViewController : UIViewController {
         navigationItem.rightBarButtonItem?.tintColor = mainPurple
 
     }
+
+    func setupEditNavigationBar(){
+
+        // указываем значение тайтла и его стиль
+        self.navigationItem.title = "Правка"
+
+        // настройка навигационного бара
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = backgroundGray
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
+        // добавляем инопки слева и справа от тайтла
+        let modalDismissAction = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(hideEditModal))
+        let modalSaveAction = UIBarButtonItem(title: "Сохранить", style: .plain, target: self, action: #selector(saveEditHabbit))
+
+        navigationItem.leftBarButtonItems = [modalDismissAction]
+        navigationItem.rightBarButtonItems = [modalSaveAction]
+        navigationItem.leftBarButtonItem?.tintColor = mainPurple
+        navigationItem.rightBarButtonItem?.tintColor = mainPurple
+
+    }
+
+    // функция сокрытия модального представляения
+    @objc func hideEditModal(){
+        dismiss(animated: true)
+    }
+
+    // функция изменения привычки после редактирования
+    @objc func saveEditHabbit(){
+
+        HabitsStore.shared.habits[habbitIndex].name = textfieldNameHabbit.text ?? " "
+        HabitsStore.shared.habits[habbitIndex].date = timePicker.date
+        HabitsStore.shared.habits[habbitIndex].color = colorPickerButton.backgroundColor ?? .black
+
+        HabitsStore.shared.save()
+
+        dismiss(animated: true)
+    }
+
 
     // функция сокрытия модального представляения
     @objc func hideModal(){

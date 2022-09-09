@@ -17,15 +17,9 @@ class HabitDetailsViewController : UIViewController {
         table.translatesAutoresizingMaskIntoConstraints = false
         table.delegate = self
         table.dataSource = self
-        //table.rowHeight = 44
-        //table.backgroundColor = .red
-        //tableView.register(PostTableViewCell.self, forCellReuseIdentifier: "postTableCellIdentifier")
         table.register(UITableViewCell.self, forCellReuseIdentifier: "defaultTableCellIdentifier")
-
         return table
     }()
-
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +31,7 @@ class HabitDetailsViewController : UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = false
 
         // добавляем инопки слева и справа от тайтла
-        let modalSaveAction = UIBarButtonItem(title: "Править", style: .plain, target: self, action: #selector(hideModal))
+        let modalSaveAction = UIBarButtonItem(title: "Править", style: .plain, target: self, action: #selector(showModal))
 
         navigationItem.rightBarButtonItems = [modalSaveAction]
         navigationItem.rightBarButtonItem?.tintColor = mainPurple
@@ -57,9 +51,17 @@ class HabitDetailsViewController : UIViewController {
     }
 
     // функция сокрытия модального представляения
-    @objc func hideModal(){
-        dismiss(animated: true)
+    @objc func showModal(){
+        let navController = UINavigationController(rootViewController: HabitViewController())
+        navController.modalPresentationStyle = .fullScreen
+        place = "Detail"
+        self.present(navController, animated:true, completion: nil)
+
+        
     }
+
+
+
 }
 
 extension HabitDetailsViewController : UITableViewDelegate {
@@ -84,19 +86,15 @@ extension HabitDetailsViewController : UITableViewDataSource {
         cell.backgroundColor = .white
         let text = HabitsStore.shared.trackDateString(forIndex: indexPath.row)
         cell.textLabel?.text = text
+
         
         if HabitsStore.shared.habit(HabitsStore.shared.habits[index], isTrackedIn: HabitsStore.shared.dates[indexPath.row]) {
-            cell.backgroundColor = .systemBlue
+            let img = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 15))
+            img.image = UIImage(systemName: "checkmark")
+            cell.accessoryView = img
         }
 
-        //TODO: тут нужно поставить галочку как в макете
-
         return cell
-
-
-
-
-
 
     }
 
