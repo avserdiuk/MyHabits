@@ -21,14 +21,14 @@ class HabitViewController : UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "НАЗВАНИЕ"
-        label.font = UIFont(name: "Helvetica-Bold", size: 13)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         return label
     }()
 
     private lazy var textfieldNameHabbit : UITextField = {
         let textField = UITextField()
         textField.placeholder = "Бегать по утрам, спать 8 часов и т.п."
-        textField.font = UIFont(name: "Helvetica", size: 17)
+        textField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -37,7 +37,7 @@ class HabitViewController : UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "ЦВЕТ"
-        label.font = UIFont(name: "Helvetica-Bold", size: 13)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         return label
     }()
 
@@ -54,7 +54,7 @@ class HabitViewController : UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "ВРЕМЯ"
-        label.font = UIFont(name: "Helvetica-Bold", size: 13)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         return label
     }()
 
@@ -62,7 +62,7 @@ class HabitViewController : UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Каждый день в "
-        label.font = UIFont(name: "Helvetica", size: 17)
+        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         return label
     }()
     
@@ -71,8 +71,8 @@ class HabitViewController : UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "11:00 PM"
-        label.font = UIFont(name: "Helvetica", size: 17)
-        label.textColor = mainPurple
+        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        label.textColor = habbitColorPurple
         return label
     }()
 
@@ -91,8 +91,8 @@ class HabitViewController : UIViewController {
         button.backgroundColor = .white
         button.addTarget(self, action: #selector(deleteHabbit) , for: .touchUpInside)
         button.setTitle("Удалить привычку", for: .normal)
-        button.setTitleColor(mainRed, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Helvetica", size: 17)
+        button.setTitleColor(habbitColorRed, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         return button
     }()
 
@@ -103,7 +103,7 @@ class HabitViewController : UIViewController {
 
         // настройка навигационного бара
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = backgroundGray
+        appearance.backgroundColor = habbitColorGray
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
 
         setupNavigationBar()
@@ -128,7 +128,6 @@ class HabitViewController : UIViewController {
 
             // добавляем события для алерта
             alertController.addAction(UIAlertAction(title: "Отмена", style: .default, handler: { _ in
-                // print("отмена удаления")
             }))
             alertController.addAction(UIAlertAction(title: "Удалить", style: .default, handler: { _ in
                 HabitsStore.shared.habits.remove(at: habbitIndex)
@@ -141,7 +140,6 @@ class HabitViewController : UIViewController {
             dateFormatter.dateFormat = "hh:mm a"
             dateFormatter.string(from: timePicker.date)
             labelTimeHabbitTime.text = "\(dateFormatter.string(from: timePicker.date))"
-
         }
     }
 
@@ -211,8 +209,8 @@ class HabitViewController : UIViewController {
 
         let modalDismissAction = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(hideModal))
         navigationItem.leftBarButtonItems = [modalDismissAction]
-        navigationItem.leftBarButtonItem?.tintColor = mainPurple
-        navigationItem.rightBarButtonItem?.tintColor = mainPurple
+        navigationItem.leftBarButtonItem?.tintColor = habbitColorPurple
+        navigationItem.rightBarButtonItem?.tintColor = habbitColorPurple
 
         if callPlace == "fromNewHabbit"{
 

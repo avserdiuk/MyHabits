@@ -10,6 +10,7 @@ import UIKit
 
 class HabbitsViewController : UIViewController {
 
+
     private lazy var layout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -24,7 +25,7 @@ class HabbitsViewController : UIViewController {
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "DefaultCell")
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = backgroundLightGray
+        collectionView.backgroundColor = habbitColorLightGray
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -35,11 +36,18 @@ class HabbitsViewController : UIViewController {
         setupView()
         addViews()
         addConstraints()
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        collectionView.reloadData() // обновляем коллекцию переходе на вью
+        collectionView.reloadData() // обновляем коллекцию при переходе на вью
+
+        // Наблюдаем за уведомлением и если приходит нужное - обновляем коллекцию
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(methodOfReceivedNotification(notification:)),
+                                               name: Notification.Name("reloadData"),
+                                               object: nil)
     }
 
     // Настраиваем навигационный бар
@@ -51,15 +59,16 @@ class HabbitsViewController : UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
 
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = backgroundGray
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        appearance.backgroundColor = habbitColorGray
 
         // Создаем UIBarButtonItem с 1 контейнером по заданию
         let modalAddHabbit = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showModal))
         navigationItem.rightBarButtonItems = [modalAddHabbit]
-        navigationItem.rightBarButtonItem?.tintColor = mainPurple
+        navigationItem.rightBarButtonItem?.tintColor = habbitColorPurple
+    }
+
+    @objc func methodOfReceivedNotification(notification: Notification) {
+        collectionView.reloadData()
     }
 
     private func addViews(){
@@ -74,6 +83,7 @@ class HabbitsViewController : UIViewController {
             self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -44)
         ])
     }
+
 
     // вызываем модальное окно навигационным баром
     @objc func showModal(){

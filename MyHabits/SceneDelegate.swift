@@ -38,15 +38,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         infoTabBarNavigatorController.tabBarItem = item2
 
         // стилизация TabBar'a
-        UITabBar.appearance().tintColor = mainPurple
-        UITabBar.appearance().backgroundColor = backgroundGray
+        UITabBar.appearance().tintColor = habbitColorPurple
+        UITabBar.appearance().backgroundColor = habbitColorGray
 
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
         self.window = window
         
-        window.tintColor = mainPurple
+        window.tintColor = habbitColorPurple
 
     }
 

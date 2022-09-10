@@ -25,8 +25,8 @@ class InfoViewController : UIViewController {
 
     private lazy var titleLable : UILabel = {
         let label = UILabel()
-        label.text = informationTitle
-        label.font = UIFont(name: "Helvetica-Bold", size: 20.0)
+        label.text = "Информация"
+        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -35,7 +35,7 @@ class InfoViewController : UIViewController {
         let label = UILabel()
         label.text = informatiosText
         label.numberOfLines = 0
-        label.font = UIFont(name: "Helvetica", size: 17.0)
+        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -53,10 +53,10 @@ class InfoViewController : UIViewController {
     func setupView(){
         view.backgroundColor = .white
 
-        self.title = informationViewTitle
+        self.title = "Сегодня"
 
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = backgroundGray
+        appearance.backgroundColor = habbitColorGray
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
 

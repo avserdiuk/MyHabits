@@ -13,7 +13,7 @@ class HabitCollectionViewCell : UICollectionViewCell {
     private lazy var labelName : UILabel = {
         let label = UILabel()
         label.text = "Выпить стакан воды"
-        label.font = UIFont(name: "Helvetica Bold", size: 17)
+        label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         return label
@@ -22,7 +22,7 @@ class HabitCollectionViewCell : UICollectionViewCell {
     private lazy var labelTime : UILabel = {
         let label = UILabel()
         label.text = "Каждый день в 7:30"
-        label.font = UIFont(name: "Helvetica Neue", size: 12)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .systemGray2
         return label
@@ -31,7 +31,7 @@ class HabitCollectionViewCell : UICollectionViewCell {
     private lazy var labelCount : UILabel = {
         let label = UILabel()
         label.text = "Счетчик 0"
-        label.font = UIFont(name: "Helvetica Neue", size: 13)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .systemGray
         return label
@@ -104,7 +104,8 @@ class HabitCollectionViewCell : UICollectionViewCell {
             labelCount.text = "Счетчик \(HabitsStore.shared.habits[index].trackDates.count)"
             imageCheck.isHidden = false
 
-            // TODO: реализовать обновление прогресс бара при выполнении привычки
+            // кидаем уведомление для обновления коллекции
+            NotificationCenter.default.post(name: Notification.Name("reloadData"), object: nil)
         }
 
     }

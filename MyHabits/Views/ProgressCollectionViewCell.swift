@@ -14,7 +14,7 @@ class ProgressCollectionViewCell : UICollectionViewCell {
     private lazy var label : UILabel = {
         let label = UILabel()
         label.text = "Все получится!"
-        label.font = UIFont(name: "Helvetica Neue", size: 13)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .systemGray
         return label
@@ -23,7 +23,7 @@ class ProgressCollectionViewCell : UICollectionViewCell {
     private lazy var labelProgress : UILabel = {
         let label = UILabel()
         label.text = "\(Int(HabitsStore.shared.todayProgress*100))%"
-        label.font = UIFont(name: "Helvetica Neue", size: 13)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .systemGray
         return label
@@ -33,7 +33,7 @@ class ProgressCollectionViewCell : UICollectionViewCell {
         let bar = UIProgressView()
         bar.translatesAutoresizingMaskIntoConstraints = false
         bar.progress = HabitsStore.shared.todayProgress
-        bar.tintColor = mainPurple
+        bar.tintColor = habbitColorPurple
         return bar
     }()
 

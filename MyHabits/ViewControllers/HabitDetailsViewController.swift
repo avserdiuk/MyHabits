@@ -49,7 +49,7 @@ class HabitDetailsViewController : UIViewController {
         let modalSaveAction = UIBarButtonItem(title: "Править", style: .plain, target: self, action: #selector(showModal))
 
         navigationItem.rightBarButtonItems = [modalSaveAction]
-        navigationItem.rightBarButtonItem?.tintColor = mainPurple
+        navigationItem.rightBarButtonItem?.tintColor = habbitColorPurple
     }
 
     // функция открытия модального представляения
