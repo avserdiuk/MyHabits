@@ -31,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarController.viewControllers = [habbitsTabBarNavigatorController, infoTabBarNavigatorController]
 
         // cтилизация контейнеров
-        let item1 = UITabBarItem(title: "Привычки", image: UIImage(named: "shape.png"), tag: 0)
+        let item1 = UITabBarItem(title: "Привычки", image: UIImage(named: "shape"), tag: 0)
         let item2 = UITabBarItem(title: "Информация", image: UIImage(systemName: "info.circle.fill"), tag: 1)
 
         habbitsTabBarNavigatorController.tabBarItem = item1

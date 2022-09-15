@@ -15,7 +15,7 @@ var mark : Int = 0 // маркер для сокрытия экрана дета
 class HabitViewController : UIViewController {
 
     let index = 0
-    let alertController = UIAlertController(title: "Удалить привычку", message: "Вы хотите удалить привычку?", preferredStyle: .alert)
+    let alertController = UIAlertController(title: "Удалить привычку", message: "Вы хотите удалить привычку ?", preferredStyle: .alert)
 
     private lazy var labelNameHabbit : UILabel = {
         let label = UILabel()
@@ -145,6 +145,7 @@ class HabitViewController : UIViewController {
 
     // обрабатываем удаляение привычки
     @objc func deleteHabbit(){
+        alertController.message = "Вы хотите удалить привычку \"\(textfieldNameHabbit.text ?? "")\"?"
         self.present(alertController, animated: true, completion: nil)
     }
 

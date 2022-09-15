@@ -16,6 +16,7 @@ class HabitCollectionViewCell : UICollectionViewCell {
         label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
+        label.numberOfLines = 2
         return label
     }()
 
@@ -67,8 +68,9 @@ class HabitCollectionViewCell : UICollectionViewCell {
         NSLayoutConstraint.activate([
             labelName.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             labelName.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20),
+            labelName.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -103),
 
-            labelTime.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 46),
+            labelTime.topAnchor.constraint(equalTo: labelName.bottomAnchor, constant: 4),
             labelTime.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20),
 
             labelCount.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 92),
@@ -116,7 +118,7 @@ class HabitCollectionViewCell : UICollectionViewCell {
         btnStatus.layer.borderColor = HabitsStore.shared.habits[index].color.cgColor
         labelName.text = HabitsStore.shared.habits[index].name
         labelName.textColor = HabitsStore.shared.habits[index].color
-        labelTime.text = HabitsStore.shared.habits[index].dateString
+        labelTime.text = "Каждый день в \(HabitsStore.shared.habits[index].dateString)"
         labelCount.text = "Счетчик \(HabitsStore.shared.habits[index].trackDates.count)"
 
         if HabitsStore.shared.habits[index].isAlreadyTakenToday {

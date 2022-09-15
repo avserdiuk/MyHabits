@@ -25,7 +25,7 @@ class InfoViewController : UIViewController {
 
     private lazy var titleLable : UILabel = {
         let label = UILabel()
-        label.text = "Информация"
+        label.text = informationTitle
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -53,7 +53,7 @@ class InfoViewController : UIViewController {
     func setupView(){
         view.backgroundColor = .white
 
-        self.title = "Сегодня"
+        self.title = "Информация"
 
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = habbitColorGray
