@@ -11,12 +11,43 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+
+
+        let tabBarController = UITabBarController()
+
+        var habbitsTabBarNavigatorController = UINavigationController()
+        var infoTabBarNavigatorController = UINavigationController()
+
+        // создаем 2 контейнера и присваиваем им нужные представления ViewController
+        habbitsTabBarNavigatorController = UINavigationController.init(rootViewController: HabbitsViewController())
+        infoTabBarNavigatorController = UINavigationController.init(rootViewController: InfoViewController())
+
+        tabBarController.viewControllers = [habbitsTabBarNavigatorController, infoTabBarNavigatorController]
+
+        // cтилизация контейнеров
+        let item1 = UITabBarItem(title: "Привычки", image: UIImage(named: "shape"), tag: 0)
+        let item2 = UITabBarItem(title: "Информация", image: UIImage(systemName: "info.circle.fill"), tag: 1)
+
+        habbitsTabBarNavigatorController.tabBarItem = item1
+        infoTabBarNavigatorController.tabBarItem = item2
+
+        // стилизация TabBar'a
+        UITabBar.appearance().tintColor = habbitColorPurple
+        UITabBar.appearance().backgroundColor = habbitColorGray
+
+        let window = UIWindow(windowScene: windowScene)
+        window.rootViewController = tabBarController
+        window.makeKeyAndVisible()
+        self.window = window
+        
+        window.tintColor = habbitColorPurple
+
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
